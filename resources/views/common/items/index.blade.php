@@ -62,7 +62,7 @@
                             </x-table.th>
 
                             <x-table.th class="w-2/12" hidden-mobile>
-                                {{ trans_choice('general.taxes', 2) }}
+                                Stock
                             </x-table.th>
 
                             <x-table.th class="w-6/12 sm:w-3/12" kind="amount">
@@ -103,15 +103,9 @@
                                 </x-table.td>
 
                                 <x-table.td class="w-2/12" hidden-mobile>
-                                    @if ($item->taxes->count())
-                                        @foreach($item->taxes as $tax)
-                                            <span class="bg-lilac-900 px-3 py-1 text-sm rounded-lg text-black ltr:mr-3 rtl:ml-3">
-                                                {{ $tax->tax->name }}
-                                            </span>
-                                        @endforeach
-                                    @else
-                                        <x-empty-data />
-                                    @endif
+                                    <x-slot name="first">
+                                        {{ $item->quantity }}
+                                    </x-slot> 
                                 </x-table.td>
 
                                 <x-table.td class="w-6/12 sm:w-3/12" kind="amount">

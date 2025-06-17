@@ -35,11 +35,15 @@ class Contact extends FormRequest
         }
 
         if (!empty($this->request->get('email'))) {
-            $email .= 'email:rfc,dns|unique:contacts,NULL,'
-                      . $id . ',id'
-                      . ',company_id,' . $company_id
-                      . ',type,' . $type
-                      . ',deleted_at,NULL';
+            $email .= 'email:rfc,dns|unique:contacts,NULL,';
+            if (!is_null($id)) {
+                $email .= $id . ',id';
+            } else {
+                $email .= '1,id';
+            }
+            $email .= ',company_id,' . $company_id
+                        . ',type,' . $type
+                        . ',deleted_at,NULL';
 
             if (isset($model) && $this->$model->user_id) {
                 $email .= '|unique:users,NULL,' . $this->$model->user_id . ',id,deleted_at,NULL';

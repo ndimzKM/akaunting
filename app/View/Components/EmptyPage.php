@@ -81,8 +81,8 @@ class EmptyPage extends Component
      */
     public function __construct(
         string $alias = '', string $group = '', string $page = '',
-        string $title = '', string $createButtonTitle = '', string $importButtonTitle = '', 
-        string $description = '', string $docsCategory = 'accounting', string $image = '', 
+        string $title = '', string $createButtonTitle = '', string $importButtonTitle = '',
+        string $description = '', string $docsCategory = 'accounting', string $image = '',
         string $imageEmptyPage = '', bool $checkPermissionCreate = true, string $permissionCreate = '',
         array $buttons = [], bool $hideButtonCreate = false, bool $hideButtonImport = false,
         bool $hideDocsDescription = false, string $importRoute = '', array $importRouteParameters = []

@@ -31,10 +31,12 @@ class ShowInAdmin
         }
 
         // Items
+        /*
         $title = trim(trans_choice('general.items', 2));
         if ($this->canAccessMenuItem($title, 'read-common-items')) {
             $menu->route('items.index', $title, [], 20, ['icon' => 'inventory_2']);
         }
+        */
 
         // Sales
         $title = trim(trans_choice('general.sales', 2));

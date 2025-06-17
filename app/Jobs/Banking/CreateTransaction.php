@@ -10,6 +10,7 @@ use App\Interfaces\Job\HasSource;
 use App\Interfaces\Job\ShouldCreate;
 use App\Jobs\Banking\CreateTransactionTaxes;
 use App\Models\Banking\Transaction;
+use App\Models\Document\Document;
 
 class CreateTransaction extends Job implements HasOwner, HasSource, ShouldCreate
 {
@@ -39,6 +40,21 @@ class CreateTransaction extends Job implements HasOwner, HasSource, ShouldCreate
 
             // Recurring
             $this->model->createRecurring($this->request->all());
+
+            // Update item quantities if this is a document payment
+            if ($this->request->has('document_id')) {
+                $document = Document::find($this->request->get('document_id'));
+                
+                if ($document && in_array($document->type, [Document::INVOICE_TYPE, Document::BILL_TYPE])) {
+                    $pay_in_full = $this->request->get('pay_in_full', false);
+                    
+                    foreach ($document->items as $document_item) {
+                        if ($document_item->item) {
+                            $document_item->item->updateQuantityOnPayment($document, $pay_in_full);
+                        }
+                    }
+                }
+            }
         });
 
         event(new TransactionCreated($this->model));

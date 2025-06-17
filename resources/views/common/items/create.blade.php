@@ -28,9 +28,34 @@
 
                         <x-form.group.text name="name" label="{{ trans('general.name') }}" />
 
+                        <x-form.group.text name="sku" label="SKU" not-required />
+
                         <x-form.group.category type="item" not-required />
 
                         <x-form.group.textarea name="description" label="{{ trans('general.description') }}" not-required />
+                    </x-slot>
+                </x-form.section>
+
+                <x-form.section>
+                    <x-slot name="head">
+                        <x-form.section.head title="Inventory" description="Inventory information" />
+                    </x-slot>
+
+                    <x-slot name="body">
+                        <x-form.group.select
+                            name="unit_id"
+                            label="{{ trans('inventory::general.units.name') }}"
+                            :options="$units"
+                            not-required
+                        />
+
+                        <x-form.group.text
+                            name="quantity"
+                            label="Quantity"
+                            type="number"
+                            step="0.01"
+                            not-required
+                        />
                     </x-slot>
                 </x-form.section>
 
@@ -47,6 +72,19 @@
                         <x-form.group.text name="sale_price" label="{{ trans('items.sale_price') }}" v-bind:disabled="sale_information" />
 
                         <x-form.group.text name="purchase_price" label="{{ trans('items.purchase_price') }}" v-bind:disabled="purchase_information" />
+
+
+                        <x-form.group.account
+                            name="income_account_id"
+                            label="Income Account"
+                            not-required
+                        />
+
+                        <x-form.group.account
+                            name="expense_account_id"
+                            label="Expense Account"
+                            not-required
+                        />
 
                         <x-form.group.tax name="tax_ids" multiple not-required />
                     </x-slot>

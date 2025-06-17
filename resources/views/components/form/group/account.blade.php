@@ -4,7 +4,7 @@
         :path="$path"
 
         name="{{ $name }}"
-        label="{{ trans_choice('general.accounts', 1) }}"
+        label="{{ $label ?? trans_choice('general.accounts', 1) }}"
         :options="$accounts"
         :option_field="[
             'key' => 'id',
@@ -32,7 +32,7 @@
 @else
     <x-form.group.select
         name="{{ $name }}"
-        label="{{ trans_choice('general.accounts', 1) }}"
+        label="{{ $label ?? trans_choice('general.accounts', 1) }}"
         :options="$accounts"
         :option_field="[
             'key' => 'id',

@@ -358,10 +358,10 @@ class Transaction extends Model
         $amount = $this->amount;
 
         // Convert amount if not same currency
-        if ($this->document->currency_code != $this->currency_code) {
-            $to_code = $this->document->currency_code;
-            $to_rate = $this->document->currency_rate;
-            //$to_rate = currency($this->document->currency_code)->getRate();
+        if ($this->document()->currency_code != $this->currency_code) {
+            $to_code = $this->document()->currency_code;
+            $to_rate = $this->document()->currency_rate;
+            //$to_rate = currency($this->document()->currency_code)->getRate();
 
             $amount = $this->convertBetween($amount, $this->currency_code, $this->currency_rate, $to_code, $to_rate);
         }
@@ -478,7 +478,7 @@ class Transaction extends Model
         }
 
         if ($this->isIncome()) {
-            if (! empty($this->document_id) && $this->document->type != 'invoice') {
+            if (! empty($this->document_id) && $this->document()->type != 'invoice') {
                 return $this->getRouteFromConfig();
             } else {
                 return !empty($this->document_id) ? 'invoices.show' : 'transactions.show';
@@ -486,7 +486,7 @@ class Transaction extends Model
         }
 
         if ($this->isExpense()) {
-            if (! empty($this->document_id) && $this->document->type != 'bill') {
+            if (! empty($this->document_id) && $this->document()->type != 'bill') {
                 return $this->getRouteFromConfig();
             } else {
                 return !empty($this->document_id) ? 'bills.show' : 'transactions.show';
@@ -500,8 +500,8 @@ class Transaction extends Model
     {
         $route = '';
 
-        $alias = config('type.document.' . $this->document->type . '.alias');
-        $prefix = config('type.document.' . $this->document->type . '.route.prefix');
+        $alias = config('type.document.' . $this->document()->type . '.alias');
+        $prefix = config('type.document.' . $this->document()->type . '.route.prefix');
 
         // if use module set module alias
         if (!empty($alias)) {
@@ -571,7 +571,7 @@ class Transaction extends Model
         } catch (\Exception $e) {}
 
         try {
-            if (empty($this->document_id) 
+            if (empty($this->document_id)
                 && $this->isNotTransferTransaction()
                 && $this->isNotSplitTransaction()
             ) {

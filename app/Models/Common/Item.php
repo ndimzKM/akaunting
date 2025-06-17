@@ -35,7 +35,7 @@ class Item extends Model
      *
      * @var array
      */
-    protected $fillable = ['company_id', 'type', 'name', 'description', 'sale_price', 'purchase_price', 'category_id', 'enabled', 'created_from', 'created_by'];
+    protected $fillable = ['company_id', 'type', 'name', 'description', 'sale_price', 'purchase_price', 'category_id', 'enabled', 'created_from', 'created_by', 'quantity', 'expense_account_id', 'sku', 'income_account_id', 'unit_id'];
 
     /**
      * The attributes that should be cast.
@@ -128,6 +128,34 @@ class Item extends Model
     public function getTaxIdsAttribute()
     {
         return $this->taxes()->pluck('tax_id');
+    }
+
+    /**
+     * Update item quantity based on document payment
+     *
+     * @param Document $document
+     * @param bool $pay_in_full
+     * @return void
+     */
+    public function updateQuantityOnPayment(Document $document, bool $pay_in_full)
+    {
+        if (!$pay_in_full) {
+            return;
+        }
+
+        $document_items = $document->items()->where('item_id', $this->id)->get();
+
+        foreach ($document_items as $document_item) {
+            if ($document->type === Document::INVOICE_TYPE) {
+                // For invoices, decrease quantity when paid
+                $this->quantity -= $document_item->quantity;
+            } elseif ($document->type === Document::BILL_TYPE) {
+                // For bills, increase quantity when paid
+                $this->quantity += $document_item->quantity;
+            }
+
+            $this->save();
+        }
     }
 
     /**

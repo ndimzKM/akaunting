@@ -13,6 +13,7 @@ use App\Jobs\Common\UpdateItem;
 use App\Models\Common\Item;
 use App\Models\Setting\Tax;
 use App\Traits\Uploads;
+use Modules\Inventory\Models\Unit;
 
 class Items extends Controller
 {
@@ -48,8 +49,9 @@ class Items extends Controller
     public function create()
     {
         $taxes = Tax::enabled()->orderBy('name')->get()->pluck('title', 'id');
+        $units = Unit::all();
 
-        return view('common.items.create', compact('taxes'));
+        return view('common.items.create', compact(['taxes', 'units']));
     }
 
     /**
