@@ -478,7 +478,7 @@ class Transaction extends Model
         }
 
         if ($this->isIncome()) {
-            if (! empty($this->document_id) && $this->document()->type != 'invoice') {
+            if (! empty($this->document_id) && $this->document->type != 'invoice') {
                 return $this->getRouteFromConfig();
             } else {
                 return !empty($this->document_id) ? 'invoices.show' : 'transactions.show';
@@ -486,7 +486,7 @@ class Transaction extends Model
         }
 
         if ($this->isExpense()) {
-            if (! empty($this->document_id) && $this->document()->type != 'bill') {
+            if (! empty($this->document_id) && $this->document->type != 'bill') {
                 return $this->getRouteFromConfig();
             } else {
                 return !empty($this->document_id) ? 'bills.show' : 'transactions.show';
